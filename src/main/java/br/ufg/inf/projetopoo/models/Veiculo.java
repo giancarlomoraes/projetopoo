@@ -1,5 +1,6 @@
 package br.ufg.inf.projetopoo.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -48,5 +50,91 @@ public class Veiculo extends Domain{
 	
 	@Column(name = "categoria", nullable = false, length = 50)
 	private String categoria;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id")
+    private Cliente cliente;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Locadora getLocadora() {
+		return locadora;
+	}
+
+	public void setLocadora(Locadora locadora) {
+		this.locadora = locadora;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	public String getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
+	}
+
+	public String getAno() {
+		return ano;
+	}
+
+	public void setAno(String ano) {
+		this.ano = ano;
+	}
+
+	public String getAcessorios() {
+		return acessorios;
+	}
+
+	public void setAcessorios(String acessorios) {
+		this.acessorios = acessorios;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	
 	
 }

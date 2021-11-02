@@ -1,5 +1,11 @@
-package br.ufg.inf.projetopoo.models;
+package br.ufg.inf.projetopoo.repositories;
 
-public interface VeiculoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import br.ufg.inf.projetopoo.models.Veiculo;
+
+@Repository
+public interface VeiculoRepository extends JpaRepository<Veiculo, Integer> {
 
 }

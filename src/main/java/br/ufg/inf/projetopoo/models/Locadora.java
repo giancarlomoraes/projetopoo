@@ -42,27 +42,61 @@ public class Locadora extends Domain{
 	
 	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JsonIgnore
-	private List<Usuario> usuarios;
-	
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<Admin> admins;
-	
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
 	private List<LocadoraAdmin> LocadoraAdmins;
-	
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<Cliente> clientes;
-	
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<Veiculo> veiculos;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_localizacao", referencedColumnName = "id")
     private Localizacao localizacao;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public List<LocadoraAdmin> getLocadoraAdmins() {
+		return LocadoraAdmins;
+	}
+
+	public void setLocadoraAdmins(List<LocadoraAdmin> locadoraAdmins) {
+		LocadoraAdmins = locadoraAdmins;
+	}
+
+	public Localizacao getLocalizacao() {
+		return localizacao;
+	}
+
+	public void setLocalizacao(Localizacao localizacao) {
+		this.localizacao = localizacao;
+	}
+	
+	
 	
 	
 }
