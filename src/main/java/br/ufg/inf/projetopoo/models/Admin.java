@@ -14,34 +14,42 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "admin")
-@JsonIdentityInfo(
-		scope = Admin.class,
-		  generator = ObjectIdGenerators.PropertyGenerator.class, 
-		  property = "id")
-public class Admin extends Domain{
-	
+@JsonIdentityInfo(scope = Admin.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Admin extends Domain {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_locadora")
 	private Locadora locadora;
-	
+
 	@Column(name = "username", unique = true, nullable = false, length = 50)
 	private String username;
-	
+
 	@Column(name = "senha", nullable = false, length = 50)
 	private String senha;
-	
+
 	@Column(name = "email", unique = true, nullable = false, length = 50)
 	private String email;
-	
+
 	@Column(name = "nome", nullable = false, length = 50)
 	private String nome;
-	
+
 	@Column(name = "sobrenome", nullable = false, length = 50)
 	private String sobrenome;
+
+	public Admin(Locadora locadora, String username, String senha, String email, String nome,
+			String sobrenome) {
+		super();
+		this.locadora = locadora;
+		this.username = username;
+		this.senha = senha;
+		this.email = email;
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+	}
 
 	public Integer getId() {
 		return id;

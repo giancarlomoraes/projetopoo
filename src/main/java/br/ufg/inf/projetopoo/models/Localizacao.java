@@ -13,29 +13,82 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "localizacao")
-@JsonIdentityInfo(
-		scope = Localizacao.class,
-		  generator = ObjectIdGenerators.PropertyGenerator.class, 
-		  property = "id")
-public class Localizacao extends Domain{
-	
+@JsonIdentityInfo(scope = Localizacao.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Localizacao extends Domain {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(name = "endereco", unique = true, nullable = false, length = 50)
 	private String endereco;
-	
+
 	@Column(name = "bairro", nullable = false, length = 50)
 	private String bairro;
-	
+
 	@Column(name = "cidade", unique = true, nullable = false, length = 50)
 	private String cidade;
-	
+
 	@Column(name = "estado", nullable = false, length = 50)
 	private String estado;
-	
-	@OneToOne(mappedBy = "localizacao")
-    private Localizacao localizacao		;
 
+	@OneToOne(mappedBy = "localizacao")
+	private Localizacao localizacao;
+
+	public Localizacao(String endereco, String bairro, String cidade, String estado, Localizacao localizacao) {
+		super();
+		this.endereco = endereco;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.localizacao = localizacao;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Localizacao getLocalizacao() {
+		return localizacao;
+	}
+
+	public void setLocalizacao(Localizacao localizacao) {
+		this.localizacao = localizacao;
+	}
 }

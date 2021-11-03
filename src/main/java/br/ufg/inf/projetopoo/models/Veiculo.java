@@ -14,39 +14,120 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "veiculo")
-@JsonIdentityInfo(
-		scope = Veiculo.class,
-		  generator = ObjectIdGenerators.PropertyGenerator.class, 
-		  property = "id")
-public class Veiculo extends Domain{
+@JsonIdentityInfo(scope = Veiculo.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Veiculo extends Domain {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_locadora")
 	private Locadora locadora;
-	
+
 	@Column(name = "codigo", unique = true, nullable = false, length = 50)
 	private String codigo;
-	
+
 	@Column(name = "marca", nullable = false, length = 50)
 	private String marca;
-	
+
 	@Column(name = "modelo", nullable = false, length = 50)
 	private String modelo;
-	
+
 	@Column(name = "ano", nullable = false, length = 50)
 	private String ano;
-	
+
 	@Column(name = "acessorios", nullable = false, length = 50)
 	private String acessorios;
-	
+
 	@Column(name = "preco", nullable = false, length = 50)
 	private Double preco;
-	
+
 	@Column(name = "categoria", nullable = false, length = 50)
 	private String categoria;
-	
+
+	public Veiculo(Locadora locadora, String codigo, String marca, String modelo, String ano, String acessorios,
+			Double preco, String categoria) {
+		super();
+		this.locadora = locadora;
+		this.codigo = codigo;
+		this.marca = marca;
+		this.modelo = modelo;
+		this.ano = ano;
+		this.acessorios = acessorios;
+		this.preco = preco;
+		this.categoria = categoria;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Locadora getLocadora() {
+		return locadora;
+	}
+
+	public void setLocadora(Locadora locadora) {
+		this.locadora = locadora;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	public String getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
+	}
+
+	public String getAno() {
+		return ano;
+	}
+
+	public void setAno(String ano) {
+		this.ano = ano;
+	}
+
+	public String getAcessorios() {
+		return acessorios;
+	}
+
+	public void setAcessorios(String acessorios) {
+		this.acessorios = acessorios;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
 }
