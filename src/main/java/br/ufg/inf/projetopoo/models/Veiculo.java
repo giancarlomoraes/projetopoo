@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -48,8 +49,7 @@ public class Veiculo extends Domain {
 	@Column(name = "categoria", nullable = false, length = 50)
 	private String categoria;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_cliente", referencedColumnName = "id")
+	@OneToOne(mappedBy = "veiculo")
 	private Cliente cliente;
 
 	public Veiculo(Locadora locadora, String codigo, String marca, String modelo, String ano, String acessorios,
@@ -147,6 +147,13 @@ public class Veiculo extends Domain {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	@Override
+	public String toString() {
+		return "Veiculo [id=" + id + ", locadora=" + locadora + ", codigo=" + codigo + ", marca=" + marca + ", modelo="
+				+ modelo + ", ano=" + ano + ", acessorios=" + acessorios + ", preco=" + preco + ", categoria="
+				+ categoria + ", cliente=" + cliente + "]";
 	}
 
 }

@@ -1,6 +1,7 @@
 
 package br.ufg.inf.projetopoo.test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,14 +58,14 @@ public class Test extends JFrame implements CommandLineRunner {
 				Integer opcao = Integer.parseInt(JOptionPane.showInputDialog("1- Entrar como Administrador Geral\n"
 						+ "2- Entrar como Administrador de Locadora\n" + "3- Entrar como Cliente\n0- Sair"));
 
-				boolean authAdmin, authCliente = false;
+				boolean authAdmin = false;
 				if (opcao == 1) {
 					authAdmin = this.loginAdmin();
 					if (authAdmin) {
 						while (true) {
-							Integer opcaoAdmin = Integer.parseInt(JOptionPane.showInputDialog(
+							Integer opcaoAdmin = null;
+							opcaoAdmin = Integer.parseInt(JOptionPane.showInputDialog(
 									"1- Adicionar Locadora\n2- Ver Locadoras\n3- Deletar Locadora\n4- Editar Locadora\n5- Adicionar Administrador de Locadora\n6- Ver Administradores de Locadora\n7- Deletar Administrador de Locadora\n8- Editar Administrador de Locadora\n0- Logout"));
-
 							if (opcaoAdmin == 1) {
 								this.adicionarLocadora();
 							} else if (opcaoAdmin == 2) {
@@ -113,10 +114,34 @@ public class Test extends JFrame implements CommandLineRunner {
 						}
 					}
 				} else if (opcao == 3) {
-					authCliente = this.loginCliente();
-					if (authCliente) {
+					Integer opcaoAutenticacaoCliente = Integer.parseInt(JOptionPane
+							.showInputDialog("Como quer entrar?\n1-Fazer Login como Cliente\n2- Cadastrar Cliente"));
+					Cliente cliente = null;
+					if (opcaoAutenticacaoCliente == 1) {
+						cliente = this.loginCliente();
+					} else if (opcaoAutenticacaoCliente == 2) {
+						this.cadastraCliente();
+						cliente = this.loginCliente();
+					} else {
+						JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!", JOptionPane.WARNING_MESSAGE);
+					}
+					if (cliente != null) {
 						while (true) {
+							Integer opcaoCliente = Integer.parseInt(JOptionPane.showInputDialog(
+									"1- Buscar Veículo\n2- Ver Veículo Alugado\n3- Desalugar Veículo\n0- Logout"));
 
+							if (opcaoCliente == 1) {
+								this.alugarVeiculo(cliente);
+							} else if (opcaoCliente == 2) {
+								this.verVeiculoAlugado(cliente);
+							} else if (opcaoCliente == 3) {
+								this.desalugarVeiculo(cliente);
+							} else if (opcaoCliente == 0) {
+								break;
+							} else {
+								JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 				} else if (opcao == 0) {
@@ -295,7 +320,7 @@ public class Test extends JFrame implements CommandLineRunner {
 		return cliente;
 	}
 
-	public boolean loginCliente() {
+	public Cliente loginCliente() {
 		List<Cliente> clientes = clienteRepository.findAll();
 		Cliente cliente = null;
 
@@ -322,7 +347,11 @@ public class Test extends JFrame implements CommandLineRunner {
 			JOptionPane.showMessageDialog(null, "Aviso!", "Nome de usuário inválido!", JOptionPane.WARNING_MESSAGE);
 		}
 
-		return validUsername && validPassword;
+		if (validUsername && validPassword) {
+			return cliente;
+		} else {
+			return null;
+		}
 	}
 
 	public void cadastraLocadoraAdmin() {
@@ -481,7 +510,7 @@ public class Test extends JFrame implements CommandLineRunner {
 		if (veiculos.size() > 0) {
 			mensagem = "Selecione um Veículo: \n";
 			for (Veiculo veiculo : veiculos) {
-				mensagem += "[" + veiculo.getId() + "] - " + veiculo.getCodigo() + " " + veiculo.getModelo() + "\n";
+				mensagem += "[" + veiculo.getId() + "] - " + veiculo.getMarca() + " " + veiculo.getModelo() + "\n";
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Aviso!", "Ainda não há veículos cadastrados!",
@@ -499,7 +528,7 @@ public class Test extends JFrame implements CommandLineRunner {
 		if (veiculos.size() > 0) {
 			String mensagem = "Veículos: \n";
 			for (Veiculo veiculo : veiculos) {
-				mensagem += "[" + veiculo.getId() + "] - " + veiculo.getCodigo() + " " + veiculo.getModelo() + "\n";
+				mensagem += "[" + veiculo.getId() + "] - " + veiculo.getMarca() + " " + veiculo.getModelo() + "\n";
 			}
 			JOptionPane.showMessageDialog(null, mensagem);
 		} else {
@@ -556,5 +585,108 @@ public class Test extends JFrame implements CommandLineRunner {
 			JOptionPane.showMessageDialog(null, "Aviso!", "Veículo Inválido!", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
+	}
+
+	public List<Veiculo> buscarVeiculo() {
+		Integer opcaoBusca = Integer.parseInt(JOptionPane.showInputDialog(
+				"Digite o parâmetro de busca:\n1- Veículo por Marca\n2- Veículo por Modelo\n3- Veículo por ano\n4- Veículo por Localização"));
+
+		List<Veiculo> veiculos = new ArrayList<Veiculo>();
+		if (opcaoBusca == 1) {
+			String marca = JOptionPane.showInputDialog("Digite a marca do Veículo");
+			veiculos = veiculoRepository.findByMarca(marca);
+		} else if (opcaoBusca == 2) {
+			String modelo = JOptionPane.showInputDialog("Digite o modelo do Veículo");
+			veiculos = veiculoRepository.findByModelo(modelo);
+		} else if (opcaoBusca == 3) {
+			String ano = JOptionPane.showInputDialog("Digite o ano do Veículo");
+			veiculos = veiculoRepository.findByAno(ano);
+		} else if (opcaoBusca == 4) {
+			List<Localizacao> localizacoes = this.buscarLocalizacao();
+			for (Veiculo v : veiculoRepository.findAll()) {
+				for (Localizacao l : localizacoes) {
+					if (v.getLocadora().getLocalizacao().toString() == l.toString()) {
+						veiculos.add(v);
+					}
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!", JOptionPane.WARNING_MESSAGE);
+		}
+
+		return veiculos;
+	}
+
+	public Veiculo alugarVeiculo(Cliente cliente) {
+		List<Veiculo> veiculos = this.buscarVeiculo();
+
+		if (veiculos.size() > 0) {
+			String mensagem = "Selecione o Veículo para alugar:\n";
+			for (Veiculo veiculo : veiculos) {
+				mensagem += "[" + veiculo.getId() + "] - " + veiculo.getMarca() + " " + veiculo.getModelo() + "\n";
+			}
+
+			Integer idVeiculo = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
+			Optional<Veiculo> veiculo = veiculoRepository.findById(idVeiculo);
+
+			if (veiculo.isPresent()) {
+				cliente.setVeiculo(veiculo.get());
+				clienteRepository.save(cliente);
+				for (Veiculo v : veiculos) {
+					v.setCliente(cliente);
+					veiculoRepository.save(v);
+				}
+
+				JOptionPane.showMessageDialog(null, "Veículo alugado com sucesso!");
+				return veiculo.get();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Aviso!", "Nenhum veículo corresponde à consulta!",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		return null;
+	}
+
+	public Veiculo verVeiculoAlugado(Cliente cliente) {
+		Veiculo veiculo = cliente.getVeiculo();
+
+		if (veiculo != null) {
+			JOptionPane.showMessageDialog(null,
+					"Veículo:\n[" + veiculo.getId() + "] - " + veiculo.getMarca() + " " + veiculo.getModelo());
+		} else {
+			JOptionPane.showMessageDialog(null, "Aviso!", "Cliente sem veículo Alugado!", JOptionPane.WARNING_MESSAGE);
+		}
+
+		return veiculo;
+	}
+
+	public void desalugarVeiculo(Cliente cliente) {
+		cliente.setVeiculo(null);
+		clienteRepository.save(cliente);
+		JOptionPane.showMessageDialog(null, "Veículo Desalugado com Sucesso!");
+	}
+
+	public List<Localizacao> buscarLocalizacao() {
+		Integer opcaoLocalizacao = Integer.parseInt(JOptionPane.showInputDialog(
+				"Digite o parâmetro de busca da localização:\n1- Endereço\n2- Bairro\n3- Cidade\n4- Estado"));
+
+		List<Localizacao> localizacoes = null;
+		if (opcaoLocalizacao == 1) {
+			String endereco = JOptionPane.showInputDialog("Digite o endereço da localização:");
+			localizacoes = localizacaoRepository.findByEndereco(endereco);
+		} else if (opcaoLocalizacao == 2) {
+			String bairro = JOptionPane.showInputDialog("Digite o bairro da localização:");
+			localizacoes = localizacaoRepository.findByBairro(bairro);
+		} else if (opcaoLocalizacao == 3) {
+			String cidade = JOptionPane.showInputDialog("Digite a cidade da localização:");
+			localizacoes = localizacaoRepository.findByCidade(cidade);
+		} else if (opcaoLocalizacao == 4) {
+			String estado = JOptionPane.showInputDialog("Digite o estado da localização:");
+			localizacoes = localizacaoRepository.findByEstado(estado);
+		} else {
+			JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!", JOptionPane.WARNING_MESSAGE);
+		}
+
+		return localizacoes;
 	}
 }

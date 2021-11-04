@@ -95,4 +95,10 @@ public class Localizacao extends Domain {
 		this.locadora = locadora;
 	}
 
+	@Override
+	public String toString() {
+		return "Localizacao [id=" + id + ", endereco=" + endereco + ", bairro=" + bairro + ", cidade=" + cidade
+				+ ", estado=" + estado + ", locadora=" + locadora + "]";
+	}
+
 }

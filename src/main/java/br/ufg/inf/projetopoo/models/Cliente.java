@@ -1,10 +1,12 @@
 package br.ufg.inf.projetopoo.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -35,7 +37,8 @@ public class Cliente extends Domain {
 	@Column(name = "sobrenome", nullable = false, length = 50)
 	private String sobrenome;
 
-	@OneToOne(mappedBy = "cliente")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_veiculo", referencedColumnName = "id")
 	private Veiculo veiculo;
 
 	public Cliente(String username, String senha, String email, String nome, String sobrenome) {
@@ -71,6 +74,14 @@ public class Cliente extends Domain {
 		return senha;
 	}
 
+	public Veiculo getVeiculo() {
+		return veiculo;
+	}
+
+	public void setVeiculo(Veiculo veiculo) {
+		this.veiculo = veiculo;
+	}
+
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
@@ -97,6 +108,12 @@ public class Cliente extends Domain {
 
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", username=" + username + ", senha=" + senha + ", email=" + email + ", nome="
+				+ nome + ", sobrenome=" + sobrenome + ", veiculo=" + veiculo + "]";
 	}
 
 }
