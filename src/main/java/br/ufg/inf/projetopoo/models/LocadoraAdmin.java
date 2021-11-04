@@ -51,6 +51,10 @@ public class LocadoraAdmin extends Domain {
 		this.sobrenome = sobrenome;
 	}
 
+	public LocadoraAdmin() {
+
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -61,6 +65,14 @@ public class LocadoraAdmin extends Domain {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public Locadora getLocadora() {
+		return locadora;
+	}
+
+	public void setLocadora(Locadora locadora) {
+		this.locadora = locadora;
 	}
 
 	public void setUsername(String username) {

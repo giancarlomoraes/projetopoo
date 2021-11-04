@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.ufg.inf.projetopoo.models.Localizacao;
 
 @Repository
-public interface LocalizacaoRepository extends JpaRepository<Localizacao, Integer>{
+public interface LocalizacaoRepository extends JpaRepository<Localizacao, Integer> {
 
 }

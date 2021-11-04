@@ -38,41 +38,22 @@ public class Locadora extends Domain {
 
 	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JsonIgnore
-	private List<Usuario> usuarios;
-
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<Admin> admins;
-
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
 	private List<LocadoraAdmin> LocadoraAdmins;
-
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<Cliente> clientes;
-
-	@OneToMany(mappedBy = "locadora", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<Veiculo> veiculos;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_localizacao", referencedColumnName = "id")
 	private Localizacao localizacao;
 
-	public Locadora(String nome, String cnpj, String telefone, List<Usuario> usuarios, List<Admin> admins,
-			List<LocadoraAdmin> locadoraAdmins, List<Cliente> clientes, List<Veiculo> veiculos,
-			Localizacao localizacao) {
+	public Locadora(String nome, String cnpj, String telefone, Localizacao localizacao) {
 		super();
 		this.nome = nome;
 		this.cnpj = cnpj;
 		this.telefone = telefone;
-		this.usuarios = usuarios;
-		this.admins = admins;
-		LocadoraAdmins = locadoraAdmins;
-		this.clientes = clientes;
-		this.veiculos = veiculos;
 		this.localizacao = localizacao;
+	}
+
+	public Locadora() {
+
 	}
 
 	public Integer getId() {
@@ -107,44 +88,12 @@ public class Locadora extends Domain {
 		this.telefone = telefone;
 	}
 
-	public List<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
-
-	public List<Admin> getAdmins() {
-		return admins;
-	}
-
-	public void setAdmins(List<Admin> admins) {
-		this.admins = admins;
-	}
-
 	public List<LocadoraAdmin> getLocadoraAdmins() {
 		return LocadoraAdmins;
 	}
 
 	public void setLocadoraAdmins(List<LocadoraAdmin> locadoraAdmins) {
 		LocadoraAdmins = locadoraAdmins;
-	}
-
-	public List<Cliente> getClientes() {
-		return clientes;
-	}
-
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
-
-	public List<Veiculo> getVeiculos() {
-		return veiculos;
-	}
-
-	public void setVeiculos(List<Veiculo> veiculos) {
-		this.veiculos = veiculos;
 	}
 
 	public Localizacao getLocalizacao() {
@@ -154,4 +103,5 @@ public class Locadora extends Domain {
 	public void setLocalizacao(Localizacao localizacao) {
 		this.localizacao = localizacao;
 	}
+
 }

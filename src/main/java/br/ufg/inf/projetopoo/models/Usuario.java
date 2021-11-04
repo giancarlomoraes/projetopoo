@@ -40,14 +40,8 @@ public class Usuario extends Domain {
 	@Column(name = "sobrenome", nullable = false, length = 50)
 	private String sobrenome;
 
-	public Usuario(Locadora locadora, String username, String senha, String email, String nome, String sobrenome) {
-		super();
-		this.locadora = locadora;
-		this.username = username;
-		this.senha = senha;
-		this.email = email;
-		this.nome = nome;
-		this.sobrenome = sobrenome;
+	public Usuario() {
+
 	}
 
 	public Integer getId() {

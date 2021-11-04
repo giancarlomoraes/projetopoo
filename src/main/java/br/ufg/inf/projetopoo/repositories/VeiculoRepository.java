@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.ufg.inf.projetopoo.models.Veiculo;
 
 @Repository
-public interface VeiculoRepository extends JpaRepository<Veiculo, Integer>{
+public interface VeiculoRepository extends JpaRepository<Veiculo, Integer> {
 
 }

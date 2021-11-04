@@ -5,8 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -20,10 +19,6 @@ public class Cliente extends Domain {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@ManyToOne
-	@JoinColumn(name = "id_locadora")
-	private Locadora locadora;
 
 	@Column(name = "username", unique = true, nullable = false, length = 50)
 	private String username;
@@ -40,14 +35,20 @@ public class Cliente extends Domain {
 	@Column(name = "sobrenome", nullable = false, length = 50)
 	private String sobrenome;
 
-	public Cliente(Locadora locadora, String username, String senha, String email, String nome, String sobrenome) {
+	@OneToOne(mappedBy = "cliente")
+	private Veiculo veiculo;
+
+	public Cliente(String username, String senha, String email, String nome, String sobrenome) {
 		super();
-		this.locadora = locadora;
 		this.username = username;
 		this.senha = senha;
 		this.email = email;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
+	}
+
+	public Cliente() {
+
 	}
 
 	public Integer getId() {

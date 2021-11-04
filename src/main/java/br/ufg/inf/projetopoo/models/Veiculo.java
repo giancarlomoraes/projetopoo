@@ -1,5 +1,6 @@
 package br.ufg.inf.projetopoo.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -46,6 +48,10 @@ public class Veiculo extends Domain {
 	@Column(name = "categoria", nullable = false, length = 50)
 	private String categoria;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_cliente", referencedColumnName = "id")
+	private Cliente cliente;
+
 	public Veiculo(Locadora locadora, String codigo, String marca, String modelo, String ano, String acessorios,
 			Double preco, String categoria) {
 		super();
@@ -57,6 +63,10 @@ public class Veiculo extends Domain {
 		this.acessorios = acessorios;
 		this.preco = preco;
 		this.categoria = categoria;
+	}
+
+	public Veiculo() {
+
 	}
 
 	public Integer getId() {
@@ -130,4 +140,13 @@ public class Veiculo extends Domain {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 }

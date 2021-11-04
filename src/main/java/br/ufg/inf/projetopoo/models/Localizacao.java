@@ -33,15 +33,18 @@ public class Localizacao extends Domain {
 	private String estado;
 
 	@OneToOne(mappedBy = "localizacao")
-	private Localizacao localizacao;
+	private Locadora locadora;
 
-	public Localizacao(String endereco, String bairro, String cidade, String estado, Localizacao localizacao) {
+	public Localizacao(String endereco, String bairro, String cidade, String estado) {
 		super();
 		this.endereco = endereco;
 		this.bairro = bairro;
 		this.cidade = cidade;
 		this.estado = estado;
-		this.localizacao = localizacao;
+	}
+
+	public Localizacao() {
+
 	}
 
 	public Integer getId() {
@@ -84,11 +87,12 @@ public class Localizacao extends Domain {
 		this.estado = estado;
 	}
 
-	public Localizacao getLocalizacao() {
-		return localizacao;
+	public Locadora getLocadora() {
+		return locadora;
 	}
 
-	public void setLocalizacao(Localizacao localizacao) {
-		this.localizacao = localizacao;
+	public void setLocadora(Locadora locadora) {
+		this.locadora = locadora;
 	}
+
 }

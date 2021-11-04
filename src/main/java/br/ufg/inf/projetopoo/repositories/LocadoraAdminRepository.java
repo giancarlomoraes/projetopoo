@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.ufg.inf.projetopoo.models.LocadoraAdmin;
 
 @Repository
-public interface LocadoraAdminRepository extends JpaRepository<LocadoraAdmin, Integer>{
+public interface LocadoraAdminRepository extends JpaRepository<LocadoraAdmin, Integer> {
 
 }
