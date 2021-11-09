@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import br.ufg.inf.projetopoo.exceptions.WrongInputException;
 import br.ufg.inf.projetopoo.models.Admin;
 import br.ufg.inf.projetopoo.models.Cliente;
 import br.ufg.inf.projetopoo.models.Locadora;
@@ -26,7 +27,7 @@ import br.ufg.inf.projetopoo.repositories.LocalizacaoRepository;
 import br.ufg.inf.projetopoo.repositories.VeiculoRepository;
 
 @Component
-public class Test extends JFrame implements CommandLineRunner {
+public class Principal extends JFrame implements CommandLineRunner {
 
 	@Autowired
 	private AdminRepository adminRepository;
@@ -55,17 +56,36 @@ public class Test extends JFrame implements CommandLineRunner {
 		while (true) {
 			List<Admin> admins = adminRepository.findAll();
 			if (admins.size() > 0) {
-				Integer opcao = Integer.parseInt(JOptionPane.showInputDialog("1- Entrar como Administrador Geral\n"
-						+ "2- Entrar como Administrador de Locadora\n" + "3- Entrar como Cliente\n0- Sair"));
+				Integer opcao = -1;
+
+				try {
+					opcao = Integer.parseInt(JOptionPane.showInputDialog("1- Entrar como Administrador Geral\n"
+							+ "2- Entrar como Administrador de Locadora\n" + "3- Entrar como Cliente\n0- Sair"));
+
+					if (opcao < 0 || opcao > 3) {
+						throw new Exception();
+					}
+				} catch (Exception e) {
+					new WrongInputException("Erro! Digite uma opção Válida");
+				}
 
 				boolean authAdmin = false;
 				if (opcao == 1) {
 					authAdmin = this.loginAdmin();
 					if (authAdmin) {
 						while (true) {
-							Integer opcaoAdmin = null;
-							opcaoAdmin = Integer.parseInt(JOptionPane.showInputDialog(
-									"1- Adicionar Locadora\n2- Ver Locadoras\n3- Deletar Locadora\n4- Editar Locadora\n5- Adicionar Administrador de Locadora\n6- Ver Administradores de Locadora\n7- Deletar Administrador de Locadora\n8- Editar Administrador de Locadora\n0- Logout"));
+							Integer opcaoAdmin = -1;
+
+							try {
+								opcaoAdmin = Integer.parseInt(JOptionPane.showInputDialog(
+										"1- Adicionar Locadora\n2- Ver Locadoras\n3- Deletar Locadora\n4- Editar Locadora\n5- Adicionar Administrador de Locadora\n6- Ver Administradores de Locadora\n7- Deletar Administrador de Locadora\n8- Editar Administrador de Locadora\n0- Logout"));
+
+								if (opcaoAdmin < 0 || opcaoAdmin > 8) {
+									throw new Exception();
+								}
+							} catch (Exception e) {
+								new WrongInputException("Erro! Digite uma opção Válida");
+							}
 							if (opcaoAdmin == 1) {
 								this.adicionarLocadora();
 							} else if (opcaoAdmin == 2) {
@@ -84,9 +104,6 @@ public class Test extends JFrame implements CommandLineRunner {
 								this.editarLocadoraAdmin(this.selecionarLocadoraAdmin());
 							} else if (opcaoAdmin == 0) {
 								break;
-							} else {
-								JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!",
-										JOptionPane.WARNING_MESSAGE);
 							}
 						}
 					}
@@ -94,8 +111,17 @@ public class Test extends JFrame implements CommandLineRunner {
 					LocadoraAdmin locadoraAdminAutenticado = this.loginLocadoraAdmin();
 					if (locadoraAdminAutenticado != null) {
 						while (true) {
-							Integer opcaoLocadoraAdmin = Integer.parseInt(JOptionPane.showInputDialog(
-									"1- Adicionar Veículo\n2- Ver Veículos\n3- Deletar Veículo\n4- Editar Veículo\n0- Logout"));
+							Integer opcaoLocadoraAdmin = -1;
+							try {
+								opcaoLocadoraAdmin = Integer.parseInt(JOptionPane.showInputDialog(
+										"1- Adicionar Veículo\n2- Ver Veículos\n3- Deletar Veículo\n4- Editar Veículo\n0- Logout"));
+
+								if (opcaoLocadoraAdmin < 1 || opcaoLocadoraAdmin > 4) {
+									throw new Exception();
+								}
+							} catch (Exception e) {
+								new WrongInputException("Erro! Digite uma opção Válida");
+							}
 
 							if (opcaoLocadoraAdmin == 1) {
 								this.adicionarVeiculo(locadoraAdminAutenticado.getLocadora());
@@ -107,29 +133,41 @@ public class Test extends JFrame implements CommandLineRunner {
 								this.editarVeiculo(this.selecionarVeiculo());
 							} else if (opcaoLocadoraAdmin == 0) {
 								break;
-							} else {
-								JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!",
-										JOptionPane.WARNING_MESSAGE);
 							}
 						}
 					}
 				} else if (opcao == 3) {
-					Integer opcaoAutenticacaoCliente = Integer.parseInt(JOptionPane
-							.showInputDialog("Como quer entrar?\n1-Fazer Login como Cliente\n2- Cadastrar Cliente"));
+					Integer opcaoAutenticacaoCliente = -1;
+					try {
+						opcaoAutenticacaoCliente = Integer.parseInt(JOptionPane.showInputDialog(
+								"Como quer entrar?\n1-Fazer Login como Cliente\n2- Cadastrar Cliente"));
+
+						if (opcaoAutenticacaoCliente < 1 || opcaoAutenticacaoCliente > 2) {
+							throw new Exception();
+						}
+					} catch (Exception e) {
+						new WrongInputException("Erro! Digite uma opção Válida");
+					}
 					Cliente cliente = null;
 					if (opcaoAutenticacaoCliente == 1) {
 						cliente = this.loginCliente();
 					} else if (opcaoAutenticacaoCliente == 2) {
 						this.cadastraCliente();
 						cliente = this.loginCliente();
-					} else {
-						JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!", JOptionPane.WARNING_MESSAGE);
 					}
 					if (cliente != null) {
 						while (true) {
-							Integer opcaoCliente = Integer.parseInt(JOptionPane.showInputDialog(
-									"1- Buscar Veículo\n2- Ver Veículo Alugado\n3- Desalugar Veículo\n0- Logout"));
+							Integer opcaoCliente = -1;
 
+							try {
+								opcaoCliente = Integer.parseInt(JOptionPane.showInputDialog(
+										"1- Buscar Veículo\n2- Ver Veículo Alugado\n3- Desalugar Veículo\n0- Logout"));
+								if (opcaoCliente < 0 || opcaoCliente > 3) {
+									throw new Exception();
+								}
+							} catch (Exception e) {
+								new WrongInputException("Erro! Digite uma opção Válida");
+							}
 							if (opcaoCliente == 1) {
 								this.alugarVeiculo(cliente);
 							} else if (opcaoCliente == 2) {
@@ -138,16 +176,11 @@ public class Test extends JFrame implements CommandLineRunner {
 								this.desalugarVeiculo(cliente);
 							} else if (opcaoCliente == 0) {
 								break;
-							} else {
-								JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!",
-										JOptionPane.WARNING_MESSAGE);
 							}
 						}
 					}
 				} else if (opcao == 0) {
 					break;
-				} else {
-					JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!", JOptionPane.WARNING_MESSAGE);
 				}
 
 			} else {
@@ -173,7 +206,7 @@ public class Test extends JFrame implements CommandLineRunner {
 		locadoraRepository.save(locadora);
 	}
 
-	public Optional<Locadora> selecionarLocadora() {
+	public Locadora selecionarLocadora() {
 		List<Locadora> locadoras = locadoraRepository.findAll();
 		String mensagem = "";
 
@@ -183,13 +216,23 @@ public class Test extends JFrame implements CommandLineRunner {
 				mensagem += "[" + locadora.getId() + "] - " + locadora.getNome() + "\n";
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Ainda não há locadoras cadastradas!",
+			JOptionPane.showMessageDialog(null, "Ainda não há locadoras cadastradas!", "Aviso!",
 					JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 
-		Integer idLocadora = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
-		return locadoraRepository.findById(idLocadora);
+		while (true) {
+			try {
+				Integer idLocadora = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
+				Optional<Locadora> locadora = locadoraRepository.findById(idLocadora);
+
+				if (locadora.isPresent()) {
+					return locadora.get();
+				}
+			} catch (Exception e) {
+				new WrongInputException("Erro! Locadora inválida Informada.");
+			}
+		}
 	}
 
 	public void verLocadoras() {
@@ -202,31 +245,38 @@ public class Test extends JFrame implements CommandLineRunner {
 			}
 			JOptionPane.showMessageDialog(null, mensagem);
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Ainda não há locadoras cadastradas!",
+			JOptionPane.showMessageDialog(null, "Ainda não há locadoras cadastradas!", "Aviso!",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
-	public boolean deletarLocadora(Optional<Locadora> locadora) {
-		if (locadora.isPresent()) {
-			locadoraRepository.delete(locadora.get());
+	public boolean deletarLocadora(Locadora locadora) {
+		if (locadora != null) {
+			locadoraRepository.delete(locadora);
+			JOptionPane.showMessageDialog(null, "Locadora Deletada com Sucesso!");
 			return true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Locadora Inválida!", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 	}
 
-	public Locadora editarLocadora(Optional<Locadora> locadoraOptional) {
-		if (locadoraOptional.isPresent()) {
-			Locadora locadora = locadoraOptional.get();
+	public Locadora editarLocadora(Locadora locadora) {
+		if (locadora != null) {
 			Localizacao localizacao = locadora.getLocalizacao();
-			Integer opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite o que deseja editar:\n\n" + "1- Nome: "
-					+ locadora.getNome() + "\n" + "2- CNPJ: " + locadora.getCnpj() + "\n" + "3- Telefone: "
-					+ locadora.getTelefone() + "\n" + "4- Endereço: " + locadora.getLocalizacao().getEndereco() + "\n"
-					+ "5- Bairro: " + locadora.getLocalizacao().getBairro() + "\n" + "6- Cidade: "
-					+ locadora.getLocalizacao().getCidade() + "\n" + "7- Estado: "
-					+ locadora.getLocalizacao().getEstado() + "\n"));
+			Integer opcao = -1;
+			try {
+				opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite o que deseja editar:\n\n" + "1- Nome: "
+						+ locadora.getNome() + "\n" + "2- CNPJ: " + locadora.getCnpj() + "\n" + "3- Telefone: "
+						+ locadora.getTelefone() + "\n" + "4- Endereço: " + locadora.getLocalizacao().getEndereco()
+						+ "\n" + "5- Bairro: " + locadora.getLocalizacao().getBairro() + "\n" + "6- Cidade: "
+						+ locadora.getLocalizacao().getCidade() + "\n" + "7- Estado: "
+						+ locadora.getLocalizacao().getEstado() + "\n"));
+				if (opcao < 1 || opcao > 7) {
+					throw new Exception();
+				}
+			} catch (Exception e) {
+				new WrongInputException("Erro! Digite uma opção Válida");
+			}
 
 			if (opcao == 1) {
 				String nome = JOptionPane.showInputDialog("Digite o novo nome: ");
@@ -259,7 +309,6 @@ public class Test extends JFrame implements CommandLineRunner {
 			localizacaoRepository.save(localizacao);
 			return locadora;
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Locadora Inválida!", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 	}
@@ -298,10 +347,10 @@ public class Test extends JFrame implements CommandLineRunner {
 			if (administrador.getSenha().equals(senha)) {
 				validPassword = true;
 			} else {
-				JOptionPane.showMessageDialog(null, "Aviso!", "Senha errada!", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Senha errada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Nome de usuário inválido!", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Nome de usuário inválido!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 		}
 
 		return validUsername && validPassword;
@@ -341,10 +390,10 @@ public class Test extends JFrame implements CommandLineRunner {
 			if (cliente.getSenha().equals(senha)) {
 				validPassword = true;
 			} else {
-				JOptionPane.showMessageDialog(null, "Aviso!", "Senha errada!", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Senha errada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Nome de usuário inválido!", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Nome de usuário inválido!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 		}
 
 		if (validUsername && validPassword) {
@@ -355,28 +404,26 @@ public class Test extends JFrame implements CommandLineRunner {
 	}
 
 	public void cadastraLocadoraAdmin() {
-		Optional<Locadora> loc = this.selecionarLocadora();
-		Locadora locadora = null;
-		if (loc.isPresent()) {
-			locadora = loc.get();
+		Locadora locadora = this.selecionarLocadora();
+
+		if (locadora != null) {
+			String nome = JOptionPane
+					.showInputDialog("Cadastro de LocadoraAdmin\nDigite o nome do Administrador de Locadora:");
+			String sobrenome = JOptionPane
+					.showInputDialog("Cadastro de LocadoraAdmin\nDigite o sobrenome do Administrador de Locadora:");
+			String username = JOptionPane
+					.showInputDialog("Cadastro de LocadoraAdmin\nDigite o username do Administrador de Locadora:");
+			String senha = JOptionPane
+					.showInputDialog("Cadastro de LocadoraAdmin\nDigite a senha do Administrador de Locadora:");
+			String email = JOptionPane
+					.showInputDialog("Cadastro de LocadoraAdmin\nDigite o email do Administrador de Locadora:");
+
+			LocadoraAdmin locadoraAdmin = new LocadoraAdmin(locadora, username, senha, email, nome, sobrenome);
+			locadoraAdminRepository.save(locadoraAdmin);
 		}
-
-		String nome = JOptionPane
-				.showInputDialog("Cadastro de LocadoraAdmin\nDigite o nome do Administrador de Locadora:");
-		String sobrenome = JOptionPane
-				.showInputDialog("Cadastro de LocadoraAdmin\nDigite o sobrenome do Administrador de Locadora:");
-		String username = JOptionPane
-				.showInputDialog("Cadastro de LocadoraAdmin\nDigite o username do Administrador de Locadora:");
-		String senha = JOptionPane
-				.showInputDialog("Cadastro de LocadoraAdmin\nDigite a senha do Administrador de Locadora:");
-		String email = JOptionPane
-				.showInputDialog("Cadastro de LocadoraAdmin\nDigite o email do Administrador de Locadora:");
-
-		LocadoraAdmin locadoraAdmin = new LocadoraAdmin(locadora, username, senha, email, nome, sobrenome);
-		locadoraAdminRepository.save(locadoraAdmin);
 	}
 
-	public Optional<LocadoraAdmin> selecionarLocadoraAdmin() {
+	public LocadoraAdmin selecionarLocadoraAdmin() {
 		List<LocadoraAdmin> locadoraAdmins = locadoraAdminRepository.findAll();
 		String mensagem = "";
 
@@ -386,13 +433,23 @@ public class Test extends JFrame implements CommandLineRunner {
 				mensagem += "[" + locadoraAdmin.getId() + "] - " + locadoraAdmin.getNome() + "\n";
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Ainda não há administradores de locadora cadastrados!",
+			JOptionPane.showMessageDialog(null, "Ainda não há administradores de locadora cadastrados!", "Aviso!",
 					JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 
-		Integer idLocadoraAdmin = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
-		return locadoraAdminRepository.findById(idLocadoraAdmin);
+		while (true) {
+			try {
+				Integer idLocadoraAdmin = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
+				Optional<LocadoraAdmin> locadoraAdmin = locadoraAdminRepository.findById(idLocadoraAdmin);
+
+				if (locadoraAdmin.isPresent()) {
+					return locadoraAdmin.get();
+				}
+			} catch (Exception e) {
+				new WrongInputException("Erro! Administrador de Locadora inválido Informado.");
+			}
+		}
 	}
 
 	public void verLocadoraAdmins() {
@@ -406,29 +463,35 @@ public class Test extends JFrame implements CommandLineRunner {
 			}
 			JOptionPane.showMessageDialog(null, mensagem);
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Ainda não há administradores de locadora cadastrados!",
+			JOptionPane.showMessageDialog(null, "Ainda não há administradores de locadora cadastrados!", "Aviso!",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
-	public boolean deletarLocadoraAdmin(Optional<LocadoraAdmin> locadoraAdminOptional) {
-		if (locadoraAdminOptional.isPresent()) {
-			locadoraAdminRepository.delete(locadoraAdminOptional.get());
+	public boolean deletarLocadoraAdmin(LocadoraAdmin locadoraAdmin) {
+		if (locadoraAdmin != null) {
+			locadoraAdminRepository.delete(locadoraAdmin);
+			JOptionPane.showMessageDialog(null, "Administrador de Locadora removido com Sucesso!");
 			return true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Locadora Inválida!", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 	}
 
-	public LocadoraAdmin editarLocadoraAdmin(Optional<LocadoraAdmin> locadoraAdminOptional) {
-		if (locadoraAdminOptional.isPresent()) {
-			LocadoraAdmin locadoraAdmin = locadoraAdminOptional.get();
-
-			Integer opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite o que deseja editar:\n\n"
-					+ "1- Usuário: " + locadoraAdmin.getUsername() + "\n" + "2- Senha: " + locadoraAdmin.getSenha()
-					+ "\n" + "3- Email: " + locadoraAdmin.getEmail() + "\n" + "4- Nome: " + locadoraAdmin.getNome()
-					+ "\n" + "5- Sobrenome: " + locadoraAdmin.getSobrenome()));
+	public LocadoraAdmin editarLocadoraAdmin(LocadoraAdmin locadoraAdmin) {
+		if (locadoraAdmin != null) {
+			Integer opcao = -1;
+			try {
+				opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite o que deseja editar:\n\n" + "1- Usuário: "
+						+ locadoraAdmin.getUsername() + "\n" + "2- Senha: " + locadoraAdmin.getSenha() + "\n"
+						+ "3- Email: " + locadoraAdmin.getEmail() + "\n" + "4- Nome: " + locadoraAdmin.getNome() + "\n"
+						+ "5- Sobrenome: " + locadoraAdmin.getSobrenome()));
+				if (opcao < 1 || opcao > 5) {
+					throw new Exception();
+				}
+			} catch (Exception e) {
+				new WrongInputException("Erro! Digite uma opção Válida");
+			}
 
 			if (opcao == 1) {
 				String username = JOptionPane.showInputDialog("Digite o novo Usuário: ");
@@ -450,8 +513,6 @@ public class Test extends JFrame implements CommandLineRunner {
 			locadoraAdminRepository.save(locadoraAdmin);
 			return locadoraAdmin;
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Administrador de Locadora Inválido!",
-					JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 	}
@@ -477,10 +538,10 @@ public class Test extends JFrame implements CommandLineRunner {
 			if (locadoraAdmin.getSenha().equals(senha)) {
 				validPassword = true;
 			} else {
-				JOptionPane.showMessageDialog(null, "Aviso!", "Senha errada!", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Senha errada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Nome de usuário inválido!", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Nome de usuário inválido!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 		}
 
 		if (validUsername && validPassword) {
@@ -495,7 +556,16 @@ public class Test extends JFrame implements CommandLineRunner {
 		String marca = JOptionPane.showInputDialog("Digite a marca do Veículo: ");
 		String modelo = JOptionPane.showInputDialog("Digite o modelo do Veículo: ");
 		String ano = JOptionPane.showInputDialog("Digite o ano do Veículo: ");
-		Double preco = Double.parseDouble(JOptionPane.showInputDialog("Digite o preço do Veículo: (Ex: 39990.99"));
+
+		Double preco = null;
+		while (true) {
+			try {
+				preco = Double.parseDouble(JOptionPane.showInputDialog("Digite o preço do Veículo: (Ex: 39990.99"));
+				break;
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Digite um preço válido!", "Aviso!", JOptionPane.WARNING_MESSAGE);
+			}
+		}
 		String categoria = JOptionPane.showInputDialog("Digite a categoria do Veículo: ");
 		String acessorios = JOptionPane.showInputDialog("Digite os acessórios do Veículo: ");
 
@@ -503,7 +573,7 @@ public class Test extends JFrame implements CommandLineRunner {
 		veiculoRepository.save(veiculo);
 	}
 
-	public Optional<Veiculo> selecionarVeiculo() {
+	public Veiculo selecionarVeiculo() {
 		List<Veiculo> veiculos = veiculoRepository.findAll();
 		String mensagem = "";
 
@@ -513,13 +583,23 @@ public class Test extends JFrame implements CommandLineRunner {
 				mensagem += "[" + veiculo.getId() + "] - " + veiculo.getMarca() + " " + veiculo.getModelo() + "\n";
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Ainda não há veículos cadastrados!",
+			JOptionPane.showMessageDialog(null, "Ainda não há veículos cadastrados!", "Aviso!",
 					JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 
-		Integer idVeiculo = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
-		return veiculoRepository.findById(idVeiculo);
+		while (true) {
+			try {
+				Integer idVeiculo = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
+				Optional<Veiculo> veiculo = veiculoRepository.findById(idVeiculo);
+
+				if (veiculo.isPresent()) {
+					return veiculo.get();
+				}
+			} catch (Exception e) {
+				new WrongInputException("Erro! Veículo inválido Informado.");
+			}
+		}
 	}
 
 	public void verVeiculos() {
@@ -532,29 +612,36 @@ public class Test extends JFrame implements CommandLineRunner {
 			}
 			JOptionPane.showMessageDialog(null, mensagem);
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Ainda não há veículos cadastrados!",
+			JOptionPane.showMessageDialog(null, "Ainda não há veículos cadastrados!", "Aviso!",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
-	public boolean deletarVeiculo(Optional<Veiculo> veiculo) {
-		if (veiculo.isPresent()) {
-			veiculoRepository.delete(veiculo.get());
+	public boolean deletarVeiculo(Veiculo veiculo) {
+		if (veiculo != null) {
+			veiculoRepository.delete(veiculo);
+			JOptionPane.showMessageDialog(null, "Veículo Deletado com Sucesso!");
 			return true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Veículo Inválido!", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 	}
 
-	public Veiculo editarVeiculo(Optional<Veiculo> veiculoOptional) {
-		if (veiculoOptional.isPresent()) {
-			Veiculo veiculo = veiculoOptional.get();
-			Integer opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite o que deseja editar:\n\n"
-					+ "1- Código: " + veiculo.getCodigo() + "\n" + "2- Marca: " + veiculo.getMarca() + "\n"
-					+ "3- Modelo: " + veiculo.getModelo() + "\n" + "4- Ano: " + veiculo.getAno() + "\n"
-					+ "5- Acessórios: " + veiculo.getAcessorios() + "\n" + "6- Preço: " + veiculo.getPreco() + "\n"
-					+ "7- Categoria: " + veiculo.getCategoria() + "\n"));
+	public Veiculo editarVeiculo(Veiculo veiculo) {
+		if (veiculo != null) {
+			Integer opcao = -1;
+			try {
+				opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite o que deseja editar:\n\n" + "1- Código: "
+						+ veiculo.getCodigo() + "\n" + "2- Marca: " + veiculo.getMarca() + "\n" + "3- Modelo: "
+						+ veiculo.getModelo() + "\n" + "4- Ano: " + veiculo.getAno() + "\n" + "5- Acessórios: "
+						+ veiculo.getAcessorios() + "\n" + "6- Preço: " + veiculo.getPreco() + "\n" + "7- Categoria: "
+						+ veiculo.getCategoria() + "\n"));
+				if (opcao < 1 || opcao > 7) {
+					throw new Exception();
+				}
+			} catch (Exception e) {
+				new WrongInputException("Erro! Digite uma opção Válida");
+			}
 
 			if (opcao == 1) {
 				String codigo = JOptionPane.showInputDialog("Digite o novo Código: ");
@@ -582,14 +669,21 @@ public class Test extends JFrame implements CommandLineRunner {
 			veiculoRepository.save(veiculo);
 			return veiculo;
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Veículo Inválido!", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 	}
 
 	public List<Veiculo> buscarVeiculo() {
-		Integer opcaoBusca = Integer.parseInt(JOptionPane.showInputDialog(
-				"Digite o parâmetro de busca:\n1- Veículo por Marca\n2- Veículo por Modelo\n3- Veículo por ano\n4- Veículo por Localização"));
+		Integer opcaoBusca = -1;
+		try {
+			opcaoBusca = Integer.parseInt(JOptionPane.showInputDialog(
+					"Digite o parâmetro de busca:\n1- Veículo por Marca\n2- Veículo por Modelo\n3- Veículo por ano\n4- Veículo por Localização"));
+			if (opcaoBusca < 1 || opcaoBusca > 4) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			new WrongInputException("Erro! Digite uma opção Válida");
+		}
 
 		List<Veiculo> veiculos = new ArrayList<Veiculo>();
 		if (opcaoBusca == 1) {
@@ -611,7 +705,7 @@ public class Test extends JFrame implements CommandLineRunner {
 				}
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Opção Inválida!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 		}
 
 		return veiculos;
@@ -626,22 +720,32 @@ public class Test extends JFrame implements CommandLineRunner {
 				mensagem += "[" + veiculo.getId() + "] - " + veiculo.getMarca() + " " + veiculo.getModelo() + "\n";
 			}
 
-			Integer idVeiculo = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
-			Optional<Veiculo> veiculo = veiculoRepository.findById(idVeiculo);
+			Veiculo veiculo = null;
+			while (true) {
+				try {
+					Integer idVeiculo = Integer.parseInt(JOptionPane.showInputDialog(mensagem));
+					Optional<Veiculo> veiculoOptional = veiculoRepository.findById(idVeiculo);
 
-			if (veiculo.isPresent()) {
-				cliente.setVeiculo(veiculo.get());
-				clienteRepository.save(cliente);
-				for (Veiculo v : veiculos) {
-					v.setCliente(cliente);
-					veiculoRepository.save(v);
+					if (veiculoOptional.isPresent()) {
+						veiculo = veiculoOptional.get();
+						break;
+					}
+				} catch (Exception e) {
+					new WrongInputException("Erro! Veículo inválido Informado.");
 				}
-
-				JOptionPane.showMessageDialog(null, "Veículo alugado com sucesso!");
-				return veiculo.get();
 			}
+
+			cliente.setVeiculo(veiculo);
+			clienteRepository.save(cliente);
+			for (Veiculo v : veiculos) {
+				v.setCliente(cliente);
+				veiculoRepository.save(v);
+			}
+
+			JOptionPane.showMessageDialog(null, "Veículo alugado com sucesso!");
+			return veiculo;
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Nenhum veículo corresponde à consulta!",
+			JOptionPane.showMessageDialog(null, "Nenhum veículo corresponde à consulta!", "Aviso!",
 					JOptionPane.WARNING_MESSAGE);
 		}
 		return null;
@@ -654,21 +758,34 @@ public class Test extends JFrame implements CommandLineRunner {
 			JOptionPane.showMessageDialog(null,
 					"Veículo:\n[" + veiculo.getId() + "] - " + veiculo.getMarca() + " " + veiculo.getModelo());
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Cliente sem veículo Alugado!", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Cliente sem veículo Alugado!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 		}
 
 		return veiculo;
 	}
 
 	public void desalugarVeiculo(Cliente cliente) {
-		cliente.setVeiculo(null);
-		clienteRepository.save(cliente);
-		JOptionPane.showMessageDialog(null, "Veículo Desalugado com Sucesso!");
+		if (cliente.getVeiculo() != null) {
+			cliente.setVeiculo(null);
+			clienteRepository.save(cliente);
+			JOptionPane.showMessageDialog(null, "Veículo Desalugado com Sucesso!");
+		} else {
+			JOptionPane.showMessageDialog(null, "Cliente sem veículo Alugado!", "Aviso!", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 	public List<Localizacao> buscarLocalizacao() {
-		Integer opcaoLocalizacao = Integer.parseInt(JOptionPane.showInputDialog(
-				"Digite o parâmetro de busca da localização:\n1- Endereço\n2- Bairro\n3- Cidade\n4- Estado"));
+
+		Integer opcaoLocalizacao = -1;
+		try {
+			opcaoLocalizacao = Integer.parseInt(JOptionPane.showInputDialog(
+					"Digite o parâmetro de busca da localização:\n1- Endereço\n2- Bairro\n3- Cidade\n4- Estado"));
+			if (opcaoLocalizacao < 1 || opcaoLocalizacao > 4) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			new WrongInputException("Erro! Digite uma opção Válida");
+		}
 
 		List<Localizacao> localizacoes = null;
 		if (opcaoLocalizacao == 1) {
@@ -684,7 +801,7 @@ public class Test extends JFrame implements CommandLineRunner {
 			String estado = JOptionPane.showInputDialog("Digite o estado da localização:");
 			localizacoes = localizacaoRepository.findByEstado(estado);
 		} else {
-			JOptionPane.showMessageDialog(null, "Aviso!", "Opção Inválida!", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Opção Inválida!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 		}
 
 		return localizacoes;

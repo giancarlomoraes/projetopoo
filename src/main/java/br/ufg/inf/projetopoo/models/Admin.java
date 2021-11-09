@@ -13,86 +13,27 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "admin")
 @JsonIdentityInfo(scope = Admin.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Admin extends Domain {
+public class Admin extends Usuario {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
-	@Column(name = "username", unique = true, nullable = false, length = 50)
-	private String username;
-
-	@Column(name = "senha", nullable = false, length = 50)
-	private String senha;
-
-	@Column(name = "email", unique = true, nullable = false, length = 50)
-	private String email;
-
-	@Column(name = "nome", nullable = false, length = 50)
-	private String nome;
-
-	@Column(name = "sobrenome", nullable = false, length = 50)
-	private String sobrenome;
-
-	public Admin(String username, String senha, String email, String nome, String sobrenome) {
-		super();
-		this.username = username;
-		this.senha = senha;
-		this.email = email;
-		this.nome = nome;
-		this.sobrenome = sobrenome;
-	}
-
+	
+	
 	public Admin() {
 
 	}
 
-	public Integer getId() {
-		return id;
+	/**
+	 * @param username
+	 * @param senha
+	 * @param email
+	 * @param nome
+	 * @param sobrenome
+	 */
+	public Admin(String username, String senha, String email, String nome, String sobrenome) {
+		super(username, senha, email, nome, sobrenome);
+		// TODO Auto-generated constructor stub
 	}
+	
+	
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getSobrenome() {
-		return sobrenome;
-	}
-
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
-	}
-
+	
 }

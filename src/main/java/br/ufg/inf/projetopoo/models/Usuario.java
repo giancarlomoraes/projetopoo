@@ -1,29 +1,23 @@
 package br.ufg.inf.projetopoo.models;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@Entity
-@Table(name = "usuario")
+@MappedSuperclass
 @JsonIdentityInfo(scope = Usuario.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Usuario extends Domain {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@ManyToOne
-	@JoinColumn(name = "id_locadora")
-	private Locadora locadora;
 
 	@Column(name = "username", unique = true, nullable = false, length = 50)
 	private String username;
@@ -43,6 +37,26 @@ public class Usuario extends Domain {
 	public Usuario() {
 
 	}
+	
+	
+
+	/**
+	 * @param username
+	 * @param senha
+	 * @param email
+	 * @param nome
+	 * @param sobrenome
+	 */
+	public Usuario(String username, String senha, String email, String nome, String sobrenome) {
+		super();
+		this.username = username;
+		this.senha = senha;
+		this.email = email;
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+	}
+
+
 
 	public Integer getId() {
 		return id;
