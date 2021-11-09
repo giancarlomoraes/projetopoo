@@ -1,5 +1,5 @@
 
-package br.ufg.inf.projetopoo.test;
+package br.ufg.inf.projetopoo.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +116,7 @@ public class Principal extends JFrame implements CommandLineRunner {
 								opcaoLocadoraAdmin = Integer.parseInt(JOptionPane.showInputDialog(
 										"1- Adicionar Veículo\n2- Ver Veículos\n3- Deletar Veículo\n4- Editar Veículo\n0- Logout"));
 
-								if (opcaoLocadoraAdmin < 1 || opcaoLocadoraAdmin > 4) {
+								if (opcaoLocadoraAdmin < 0 || opcaoLocadoraAdmin > 4) {
 									throw new Exception();
 								}
 							} catch (Exception e) {

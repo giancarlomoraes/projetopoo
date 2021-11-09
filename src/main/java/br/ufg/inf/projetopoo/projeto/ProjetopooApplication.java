@@ -7,7 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import br.ufg.inf.projetopoo.test.Principal;
+import br.ufg.inf.projetopoo.main.Principal;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = { "br.ufg.inf.projetopoo.*" })

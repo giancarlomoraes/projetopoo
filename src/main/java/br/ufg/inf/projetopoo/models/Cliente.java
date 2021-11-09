@@ -1,11 +1,7 @@
 package br.ufg.inf.projetopoo.models;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,16 +17,11 @@ public class Cliente extends Usuario {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_veiculo", referencedColumnName = "id")
 	private Veiculo veiculo;
-	
-	
-
 
 	public Cliente() {
 
 	}
 
-	
-	
 	/**
 	 * @param username
 	 * @param senha
@@ -43,8 +34,6 @@ public class Cliente extends Usuario {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
 	public Veiculo getVeiculo() {
 		return veiculo;
 	}
@@ -52,6 +41,5 @@ public class Cliente extends Usuario {
 	public void setVeiculo(Veiculo veiculo) {
 		this.veiculo = veiculo;
 	}
-
 
 }
