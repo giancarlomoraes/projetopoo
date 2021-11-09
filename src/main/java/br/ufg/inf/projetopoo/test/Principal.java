@@ -27,7 +27,7 @@ import br.ufg.inf.projetopoo.repositories.LocalizacaoRepository;
 import br.ufg.inf.projetopoo.repositories.VeiculoRepository;
 
 @Component
-public class Test extends JFrame implements CommandLineRunner {
+public class Principal extends JFrame implements CommandLineRunner {
 
 	@Autowired
 	private AdminRepository adminRepository;

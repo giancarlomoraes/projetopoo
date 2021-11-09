@@ -52,13 +52,13 @@ create table locadoraadmin(
 
 create table cliente(
     id serial primary key,
-    id_locadora integer not null,
+	id_veiculo integer,
     username varchar (50),
     senha varchar (50),
     email varchar (50),
     nome varchar (50),
     sobrenome varchar(50),
-    constraint fk_cliente_locadora foreign key (id_locadora) references locadora(id)
+	constraint fk_cliente_veiculo foreign key (id_veiculo) references veiculo(id)
 );
 
 create table veiculo(

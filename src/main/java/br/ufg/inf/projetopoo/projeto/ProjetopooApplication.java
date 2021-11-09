@@ -7,7 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import br.ufg.inf.projetopoo.test.Test;
+import br.ufg.inf.projetopoo.test.Principal;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = { "br.ufg.inf.projetopoo.*" })
@@ -18,7 +18,7 @@ public class ProjetopooApplication {
 	public static void main(String[] args) throws Exception {
 		ConfigurableApplicationContext context = new SpringApplicationBuilder(ProjetopooApplication.class)
 				.headless(false).run(args);
-		Test appFrame = context.getBean(Test.class);
+		Principal appFrame = context.getBean(Principal.class);
 	}
 
 }
